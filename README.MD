@@ -23,8 +23,8 @@ Follow these steps to get your development environment up and running:
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/yourusername/fastapi-yolov9-fasterrcnn.git
-cd fastapi-yolov9-fasterrcnn
+git@github.com:Dermalogical-AI-Assistant/Skin-Analysis-Service.git
+cd Skin-Analysis-Service
 ```
 
 ### 2. Create a virtual environment
