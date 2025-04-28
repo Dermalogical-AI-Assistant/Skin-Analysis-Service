@@ -65,7 +65,12 @@ Create a `.env` file in the root directory of the project and add the following 
 ```bash
 touch .env
 ```
-### 7. Run the application
+### 7. Install dependence
+```bash
+    pip install -r requirements.txt
+```
+
+### 8. Run the application
 
 ```bash
 uvicorn main:app --host
