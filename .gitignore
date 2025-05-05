@@ -9,3 +9,4 @@ __pycache__/
 *.pkl
 *.pt
 *.pth
+venv
