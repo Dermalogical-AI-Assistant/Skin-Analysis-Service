@@ -13,6 +13,9 @@ convnext_for_skin_classification_model_path = './app/ml_models/convnext/model_co
 
 # Function to download a model from Dropbox with progress bar
 def download_model(url, save_path):
+    # Tạo thư mục nếu chưa tồn tại
+    os.makedirs(os.path.dirname(save_path), exist_ok=True)
+
     response = requests.get(url, stream=True)
 
     # Check if the request was successful
@@ -33,7 +36,12 @@ def download_model(url, save_path):
         print(f"Failed to download the model. Status code: {response.status_code}")
 
 
-# Download both models with progress
-download_model(yolov9_for_acne_detection_model, yolov9_for_acne_detection_model_path)
-download_model(mobileViT_for_acne_severity_model, mobileViT_for_acne_severity_model_path)
-download_model(convnext_for_skin_classification_model, convnext_for_skin_classification_model_path)
+def main():
+    # Tải cả hai model với thanh tiến trình
+    download_model(yolov9_for_acne_detection_model, yolov9_for_acne_detection_model_path)
+    download_model(mobileViT_for_acne_severity_model, mobileViT_for_acne_severity_model_path)
+    download_model(convnext_for_skin_classification_model, convnext_for_skin_classification_model_path)
+
+
+if __name__ == "__main__":
+    main()

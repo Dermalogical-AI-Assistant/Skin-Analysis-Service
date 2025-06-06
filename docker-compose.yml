@@ -1,0 +1,18 @@
+
+version: "3.9"
+
+services:
+  app:
+    build: .
+    container_name: skin-analysis-service
+    ports:
+      - "4002:4002"
+    volumes:
+      - .:/app
+      - ml-models:/app/app/ml_models
+    restart: always
+    env_file:
+      - .env
+
+volumes:
+  ml-models:

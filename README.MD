@@ -63,7 +63,7 @@ python3 ./setup_ml_models.py
 Create a `.env` file in the root directory of the project and add the following variables:
 
 ```bash
-touch .env
+touch ..env
 ```
 ### 7. Install dependence
 ```bash
