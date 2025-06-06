@@ -1,5 +1,6 @@
 import requests
 from tqdm import tqdm
+import os 
 
 # URL of your shared Dropbox links (make sure they are modified for direct download)
 yolov9_for_acne_detection_model = 'https://www.dropbox.com/scl/fi/s4tat0gyr3wiiv9nzmbua/best.pt?rlkey=8lygobguxvubacr0v6520oms4&st=w2mdh0o7&dl=1'
