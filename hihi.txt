@@ -1,0 +1,66 @@
+.
+├── app
+│   ├── api
+│   │   └── v1
+│   │       ├── api_v1.py
+│   │       ├── endpoints
+│   │       │   ├── __pycache__
+│   │       │   │   └── skin_analysis.cpython-311.pyc
+│   │       │   └── skin_analysis.py
+│   │       └── __pycache__
+│   │           └── api_v1.cpython-311.pyc
+│   ├── core
+│   │   ├── config.py
+│   │   ├── init_app.py
+│   │   └── __pycache__
+│   │       └── config.cpython-311.pyc
+│   ├── main.py
+│   ├── ml_models
+│   │   ├── faster_rcnn
+│   │   │   ├── loader.py
+│   │   │   └── weights
+│   │   ├── mobileViT
+│   │   │   ├── loader.py
+│   │   │   ├── __pycache__
+│   │   │   │   └── loader.cpython-311.pyc
+│   │   │   └── weights
+│   │   │       ├── best_model.keras
+│   │   │       ├── last_model.keras
+│   │   │       └── note.txt
+│   │   └── yolo
+│   │       ├── loader.py
+│   │       ├── __pycache__
+│   │       │   └── loader.cpython-311.pyc
+│   │       └── weights
+│   │           ├── best.pt
+│   │           ├── last.pt
+│   │           ├── note.txt
+│   │           └── yolov9c.pt
+│   ├── models
+│   ├── __pycache__
+│   │   └── main.cpython-311.pyc
+│   ├── schemas
+│   │   └── prediction.py
+│   ├── services
+│   │   ├── faster_rcnn_service.py
+│   │   ├── mobile_ViT.py
+│   │   ├── __pycache__
+│   │   │   ├── mobile_ViT.cpython-311.pyc
+│   │   │   └── yolo_service.cpython-311.pyc
+│   │   └── yolo_service.py
+│   ├── temp_images
+│   └── utils
+│       ├── image_utils.py
+│       ├── path.py
+│       └── __pycache__
+│           └── path.cpython-311.pyc
+├── hihi.txt
+├── README.MD
+├── requirements.txt
+├── set_up_ml_mode.py
+├── test_main.http
+└── tests
+    ├── test_faster_rcnn.py
+    └── test_yolo.py
+
+27 directories, 37 files
