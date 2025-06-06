@@ -30,7 +30,8 @@ RUN chmod +x entrypoint.sh
 
 # Create directories for models
 RUN mkdir -p ./app/ml_models/yolo/weights \
-    && mkdir -p ./app/ml_models/mobileViT/weights
+    && mkdir -p ./app/ml_models/mobileViT/weights \
+    && mkdir -p ./app/ml_models/convnext
 
 # Expose the default FastAPI port
 EXPOSE 4002
