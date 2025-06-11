@@ -37,21 +37,23 @@ def classify_skin_type(image_bytes: bytes):
     
     # Get first face (you might want to handle multiple faces differently)
     detection = results.detections[0]
-    bbox = detection.location_data.relative_bounding_box
-    ih, iw = img.shape[:2]
-    
-    # Calculate face bounding box
-    x = max(0, int(bbox.xmin * iw))
-    y = max(0, int(bbox.ymin * ih))
-    w = min(iw - x, int(bbox.width * iw))
-    h = min(ih - y, int(bbox.height * ih))
-    
-    # Extract face ROI
-    face = img[y:y+h, x:x+w]
+    if detection:
+        bbox = detection.location_data.relative_bounding_box
+        ih, iw = img.shape[:2]
+        
+        # Calculate face bounding box
+        x = max(0, int(bbox.xmin * iw))
+        y = max(0, int(bbox.ymin * ih))
+        w = min(iw - x, int(bbox.width * iw))
+        h = min(ih - y, int(bbox.height * ih))
+        
+        # Extract face ROI
+        face = img[y:y+h, x:x+w]
+        img = face
     
     # Convert to tensor and apply transforms
     try:
-        img_tensor = transform(face).unsqueeze(0)  # add batch dimension
+        img_tensor = transform(img).unsqueeze(0)  # add batch dimension
     except Exception as e:
         return {"error": f"Image processing failed: {str(e)}"}, classes
     
