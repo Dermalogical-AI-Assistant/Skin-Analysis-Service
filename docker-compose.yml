@@ -1,17 +1,16 @@
 version: "3.9"
 
 services:
-  app:
+  skin-analysis-service:
     build: .
     container_name: skin-analysis-service
     ports:
       - "4002:4002"
-    volumes:
-      - .:/app
-      - ml-models:/app/app/ml_models
+    environment:
+      CLOUDINARY_CLOUD_NAME: ${CLOUDINARY_CLOUD_NAME}
+      CLOUDINARY_API_KEY: ${CLOUDINARY_API_KEY}
+      CLOUDINARY_API_SECRET: ${CLOUDINARY_API_SECRET}
+      SKIN_ANALYSIS_DATABASE_URL: ${SKIN_ANALYSIS_DATABASE_URL}
+      SECRET_KEY: ${SECRET_KEY}
     restart: always
-    env_file:
-      - .env
 
-volumes:
-  ml-models:

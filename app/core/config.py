@@ -3,9 +3,9 @@ import os
 
 # Cấu hình Cloudinary
 cloudinary.config(
-    cloud_name="dk6ivhi6t",
-    api_key="559512844423742",
-    api_secret="IoD2cw9ypB3R7the0JIah0uyA44",
+    cloud_name=f"{os.getenv('CLOUDINARY_CLOUD_NAME')}",
+    api_key=f"{os.getenv('CLOUDINARY_API_KEY')}",
+    api_secret=f"{os.getenv('CLOUDINARY_API_SECRET')}",
     secure=True
 )
 

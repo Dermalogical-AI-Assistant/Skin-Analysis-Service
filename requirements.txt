@@ -114,6 +114,7 @@ prometheus_client==0.21.1
 prompt_toolkit==3.0.51
 protobuf==4.25.3
 psutil==7.0.0
+psycopg2-binary==2.9.10
 ptyprocess==0.7.0
 pure_eval==0.2.3
 py-cpuinfo==9.0.0

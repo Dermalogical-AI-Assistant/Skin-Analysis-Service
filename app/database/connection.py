@@ -7,9 +7,9 @@ from app.models.base_model import Base
 
 load_dotenv()
 
-DATABASE_URL = f"postgresql+asyncpg://admin:admin@localhost:5432/skin_analysis"
+DATABASE_URL = f"{os.getenv('SKIN_ANALYSIS_DATABASE_URL')}"
 # DATABASE_URL = f"postgresql+asyncpg://{os.getenv('DATABASE_USER')}:{os.getenv('DATABASE_PASSWORD')}@{os.getenv('DATABASE_HOST')}:{os.getenv('DATABASE_PORT')}/{os.getenv('DATABASE_NAME')}"
-
+print(DATABASE_URL)
 # Async engine
 engine = create_async_engine(DATABASE_URL, echo=True)
 
