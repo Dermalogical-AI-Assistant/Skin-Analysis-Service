@@ -32,11 +32,11 @@ def classify_skin_type(image_bytes: bytes):
     # Detect faces
     results = detector.process(cv2.cvtColor(img, cv2.COLOR_BGR2RGB))
     
-    if not results.detections:
-        return {"error": "No face detected"}, classes
-    
-    # Get first face (you might want to handle multiple faces differently)
-    detection = results.detections[0]
+    detection = None
+
+    if results.detections:
+        detection = results.detections[0]
+
     if detection:
         bbox = detection.location_data.relative_bounding_box
         ih, iw = img.shape[:2]
