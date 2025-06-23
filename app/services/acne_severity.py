@@ -84,7 +84,7 @@ class CompleteAcneAnalyzer:
                         # }
                     }
                 ]
-            },
+            }
 
             print(f"✅ Analysis completed!")
             return complete_results
