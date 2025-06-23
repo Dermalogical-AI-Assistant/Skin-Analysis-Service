@@ -1,14 +1,12 @@
 # ===== app/api/v1/endpoints/skin_analysis.py =====
 from fastapi import APIRouter, UploadFile, File, Query, Depends, HTTPException
-from fastapi.security import HTTPAuthorizationCredentials
 from starlette.responses import JSONResponse
 from sqlalchemy.ext.asyncio import AsyncSession
 from typing import Dict, Any, Optional
 import uuid
-
 from app.schemas.convert.skin_analysis import acne_detection_to_response
+from app.services.acne_severity import CompleteAcneAnalyzer
 from app.services.yolo_service import detect_objects_yolov9
-from app.services.mobile_ViT import detect_objects_mobileViT
 from app.services.convnext_service import classify_skin_type
 
 from app.database.connection import get_db
@@ -16,8 +14,12 @@ from app.services.skin_analysis import SkinAnalysisService
 from app.schemas.skin_analysis import SkinAnalysisResponse, AnalysisStatistics, SkinAnalysisHistoryItem
 from app.core.auth import get_current_user_id, security_optional, decode_access_token, get_current_user_id_optional
 from jose import JWTError
+import asyncio
+from concurrent.futures import ThreadPoolExecutor
 
 router = APIRouter()
+
+analyzer = CompleteAcneAnalyzer()
 
 
 def get_skin_analysis_service(db: AsyncSession = Depends(get_db)) -> SkinAnalysisService:
@@ -27,28 +29,53 @@ def get_skin_analysis_service(db: AsyncSession = Depends(get_db)) -> SkinAnalysi
 @router.post("/predict")
 async def predict_yolo(
         image: UploadFile = File(...),
-        conf: float = Query(default=0.5, ge=0, le=1, description="Confidence threshold between 0 and 1"),
-        save_to_db: bool = Query(default=True, description="Whether to save analysis to database"),
+        conf: float = Query(default=0.01, ge=0, le=1),
+        save_to_db: bool = Query(default=True),
         service: SkinAnalysisService = Depends(get_skin_analysis_service),
         current_user_id: Optional[str] = Depends(get_current_user_id_optional)
 ):
     try:
         print("current_user_id:", current_user_id)
 
-        # READ IMAGE
+        # READ IMAGE một lần
         image_bytes = await image.read()
 
-        # Call models to predict
-        acne_detection_results_json, acne_detection_conf_threshold, acne_detection_image_url, acne_detection__classes = detect_objects_yolov9(
-            image_bytes,
-            conf_threshold=conf
-        )
-        acne_severity_results, acne_severity_conf_threshold, acne_severity_classes = detect_objects_mobileViT(
-            image_bytes,
-            conf_threshold=conf
+        # Tạo wrapper cho các hàm sync
+        async def run_acne_detection():
+            loop = asyncio.get_event_loop()
+            with ThreadPoolExecutor() as executor:
+                return await loop.run_in_executor(
+                    executor,
+                    detect_objects_yolov9,
+                    image_bytes,
+                    conf
+                )
+
+        async def run_skin_type_classification():
+            loop = asyncio.get_event_loop()
+            with ThreadPoolExecutor() as executor:
+                return await loop.run_in_executor(
+                    executor,
+                    classify_skin_type,
+                    image_bytes
+                )
+
+        # Chạy song song tất cả models
+        (acne_detection_results,
+         acne_severity_results,
+         skin_type_results) = await asyncio.gather(
+            run_acne_detection(),
+            analyzer.analyze_acne(image),  # Đã là async
+            run_skin_type_classification()
         )
 
-        result_return, classes = classify_skin_type(image_bytes=image_bytes)
+        # Unpack results
+        (acne_detection_results_json,
+         acne_detection_conf_threshold,
+         acne_detection_image_url,
+         acne_detection__classes) = acne_detection_results
+
+        result_return, classes = skin_type_results
 
         # Prepare prediction results
         prediction_results = {
@@ -59,13 +86,7 @@ async def predict_yolo(
                 },
                 "predicts": acne_detection_results_json,
             },
-            "acneSeverity": {
-                "meta": {
-                    "classes": acne_severity_classes,
-                    "conf_threshold": acne_severity_conf_threshold
-                },
-                "predicts": [acne_severity_results] if acne_severity_results else []
-            },
+            "acneSeverity": acne_severity_results,
             "skinType": {
                 "meta": {
                     "classes": classes
@@ -75,20 +96,20 @@ async def predict_yolo(
             "imageURL": acne_detection_image_url
         }
 
-        # Save to database if requested and user is authenticated
+        # Save to database logic (unchanged)
         saved_analysis = None
         if save_to_db and current_user_id:
             try:
                 saved_analysis = await service.create_analysis(prediction_results, current_user_id)
             except Exception as e:
-                # Log error but don't fail the prediction
                 print(f"Warning: Failed to save analysis to database: {str(e)}")
 
-        # Return response with prediction results and saved analysis info
+        # Return response
         response_data = prediction_results.copy()
         if saved_analysis:
             response_data["id"] = str(saved_analysis["id"])
-            response_data["created_at"] = saved_analysis["created_at"].isoformat() if saved_analysis["created_at"] else None
+            response_data["created_at"] = saved_analysis["created_at"].isoformat() if saved_analysis[
+                "created_at"] else None
             response_data["message"] = "Analysis saved successfully"
         elif save_to_db and not current_user_id:
             response_data["save_status"] = {
