@@ -4,7 +4,7 @@ import os
 
 # URL of your shared Dropbox links
 yolov9_for_acne_detection_model = 'https://www.dropbox.com/scl/fi/s4tat0gyr3wiiv9nzmbua/best.pt?rlkey=8lygobguxvubacr0v6520oms4&st=w2mdh0o7&dl=1'
-convnext_for_skin_classification_model = 'https://www.dropbox.com/scl/fi/9eds3jnzwf68rss2z7l6l/model_convnext_88.pth?rlkey=ksgbscw63yuc8w4fzetzqqahs&e=1&st=mwz3i9qw&dl=1'
+convnext_for_skin_classification_model = 'https://www.dropbox.com/scl/fi/vr2bvxj4g1ej0rup7uplk/model_convnext.pth?rlkey=gkmy0ufqhzhdrfxbuzij295m1&st=rnbobidc&dl=1'
 efficientnet_b3_mask = 'https://www.dropbox.com/scl/fi/0iasjhktjs2pq8funn6ob/best.pth?rlkey=lxowps4aihef96y5z25d955fc&st=7o3qfbfw&dl=1'
 unetpp = 'https://www.dropbox.com/scl/fi/o5jg8kkh3dcb0zgqy435z/best_model.keras?rlkey=zq49w1t9bir2y3wit4al37egi&st=u8dbxcd8&dl=1'
 
