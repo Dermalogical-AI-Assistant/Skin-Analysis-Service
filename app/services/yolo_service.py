@@ -39,17 +39,17 @@ def draw_boxes_only(results, original_image, conf_threshold=0.5):
         # Vẽ bounding box
         cv2.rectangle(img, (x1, y1), (x2, y2), color=color, thickness=2)
 
-        # Kích thước label
-        (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
-        top_left = (x1, y1 - text_height - 10)
-        bottom_right = (x1 + text_width + 4, y1)
+        # # Kích thước label
+        # (text_width, text_height), baseline = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.6, 2)
+        # top_left = (x1, y1 - text_height - 10)
+        # bottom_right = (x1 + text_width + 4, y1)
 
-        # Vẽ nền label (rectangle)
-        cv2.rectangle(img, top_left, bottom_right, color, thickness=cv2.FILLED)
-
-        # Vẽ chữ trên nền
-        cv2.putText(img, label, (x1 + 2, y1 - 5),
-                    cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
+        # # Vẽ nền label (rectangle)
+        # cv2.rectangle(img, top_left, bottom_right, color, thickness=cv2.FILLED)
+        #
+        # # Vẽ chữ trên nền
+        # cv2.putText(img, label, (x1 + 2, y1 - 5),
+        #             cv2.FONT_HERSHEY_SIMPLEX, 0.6, (255, 255, 255), 2)
 
     return img
 
