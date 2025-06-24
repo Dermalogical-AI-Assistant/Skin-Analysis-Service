@@ -21,7 +21,7 @@ class SkinAnalysisRepository:
         # Create main session
         session = SkinAnalysisSession(
             user_id=user_id,
-            image_url=analysis_data.get("imageURL", "")
+            image_url=analysis_data.get("image_url", "")
         )
         self.db.add(session)
         await self.db.flush()  # Get session.id
