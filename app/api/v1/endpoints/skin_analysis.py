@@ -93,7 +93,7 @@ async def predict_yolo(
                 },
                 "predicts": result_return
             },
-            "imageURL": acne_detection_image_url
+            "image_url": acne_detection_image_url
         }
 
         # Save to database logic (unchanged)
